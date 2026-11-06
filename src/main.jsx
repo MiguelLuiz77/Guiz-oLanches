@@ -42,10 +42,7 @@ function Header({ cartCount, onOpenCart }) {
 }
 
 function Hero() {
-  const sectionRef = useRef(null);
-  const videoRef = useRef(null);
-  const rafRef = useRef(0);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -55,52 +52,25 @@ function Hero() {
     return () => query.removeEventListener?.('change', update);
   }, []);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const video = videoRef.current;
-    if (!section || !video || reducedMotion) return undefined;
-
-    const syncFrame = () => {
-      rafRef.current = 0;
-      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
-      const scrollRange = Math.max(1, section.offsetHeight - window.innerHeight);
-      const progress = clamp(-section.getBoundingClientRect().top / scrollRange, 0, 1);
-      const nextTime = progress * video.duration;
-      if (Math.abs(video.currentTime - nextTime) > 0.035) {
-        try { video.currentTime = nextTime; } catch { /* Metadata may still be loading. */ }
-      }
-    };
-    const requestSync = () => {
-      if (!rafRef.current) rafRef.current = window.requestAnimationFrame(syncFrame);
-    };
-    window.addEventListener('scroll', requestSync, { passive: true });
-    window.addEventListener('resize', requestSync);
-    video.addEventListener('loadedmetadata', requestSync);
-    requestSync();
-    return () => {
-      window.removeEventListener('scroll', requestSync);
-      window.removeEventListener('resize', requestSync);
-      video.removeEventListener('loadedmetadata', requestSync);
-      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
-    };
-  }, [reducedMotion]);
-
   return (
-    <section id="inicio" ref={sectionRef} className={`hero-scroll ${reducedMotion ? 'motion-reduced' : ''}`}>
+    <section id="inicio" className={`hero-scroll ${reducedMotion ? 'motion-reduced' : ''}`}>
       <div className="hero-stage">
         <img className="hero-poster" src="/assets/hero-burger.png" alt="Hambúrguer artesanal acompanhado de batatas fritas e refrigerante" />
-        <video
-          ref={videoRef}
-          className="hero-video"
-          muted
-          playsInline
-          preload="metadata"
-          poster="/assets/hero-burger.png"
-          aria-hidden="true"
-          tabIndex={-1}
-        >
-          <source src="/assets/hero-scroll.mp4" type="video/mp4" />
-        </video>
+        {!reducedMotion && (
+          <video
+            className="hero-video"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster="/assets/hero-burger.png"
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            <source src="/assets/hero-scroll.mp4" type="video/mp4" />
+          </video>
+        )}
         <div className="hero-shade" />
         <div className="hero-content page-shell">
           <div className="hero-copy" data-reveal>

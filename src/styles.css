@@ -43,14 +43,13 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .header-order span { font-size: 19px; }
 .menu-toggle, .mobile-cart-link { display: none; }
 
-/* Hero and scroll-controlled film */
-.hero-scroll { position: relative; height: 285vh; background: #100a05; }
-.hero-scroll.motion-reduced { height: 100svh; min-height: 700px; }
-.hero-stage { position: sticky; top: 0; height: 100svh; min-height: 620px; overflow: hidden; isolation: isolate; background: #130a03; }
-.motion-reduced .hero-stage { height: 100%; }
+/* Hero and independent background film */
+.hero-scroll { position: relative; height: 100svh; min-height: 700px; background: #100a05; }
+.hero-stage { position: relative; height: 100%; min-height: 620px; overflow: hidden; isolation: isolate; background: #130a03; }
 .hero-poster, .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 52%; }
 .hero-poster { z-index: -3; }
 .hero-video { z-index: -2; }
+.motion-reduced .hero-video { display: none; }
 .hero-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgba(8, 7, 5, .94) 0%, rgba(8, 7, 5, .81) 30%, rgba(8, 7, 5, .28) 58%, rgba(8, 7, 5, .04) 100%), linear-gradient(0deg, rgba(11, 9, 5, .55), transparent 26%); }
 .hero-content { height: 100%; padding-top: 82px; position: relative; display: flex; align-items: center; }
 .hero-copy { width: min(485px, 47%); padding: 12px 0 50px; }
@@ -264,9 +263,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   .main-nav .nav-home { color: var(--yellow); }
   .mobile-cart-link { min-height: 44px; margin-top: 8px; padding: 0 13px; border: 0; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; background: #2b2619; color: #ffdb45; font-size: 13px; font-weight: 900; }
   .mobile-cart-link span { width: 23px; height: 23px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: #17130a; }
-  .hero-scroll { height: 230svh; }
-  .hero-scroll.motion-reduced { height: 100svh; min-height: 650px; }
-  .hero-stage { min-height: 620px; }
+  .hero-scroll { min-height: 650px; }
+  .hero-stage { min-height: 650px; }
   .hero-poster, .hero-video { object-position: 61% center; }
   .hero-shade { background: linear-gradient(90deg, rgba(9, 7, 4, .86), rgba(9, 7, 4, .55) 58%, rgba(9, 7, 4, .12)), linear-gradient(0deg, rgba(9, 7, 4, .5), transparent 43%); }
   .hero-content { padding-top: 78px; align-items: center; }
@@ -353,5 +351,4 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   [data-reveal] { opacity: 1; transform: none; }
-  .hero-scroll { height: 100svh; min-height: 620px; }
 }
